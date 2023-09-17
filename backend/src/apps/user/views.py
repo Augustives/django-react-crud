@@ -29,6 +29,7 @@ class UserLoginView(KnoxLoginView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         login(request, user)
+
         return super(UserLoginView, self).post(request, format=None)
 
 
@@ -38,22 +39,27 @@ class UserCrudView(APIView):
             self.permission_classes = [AllowAny]
         else:
             self.permission_classes = [IsAuthenticated]
+
         return super().get_permissions()
 
     def dispatch(self, *args, **kwargs):
         if self.request.method.lower() != "post":
             method_decorator(csrf_protect)(self)
+
         return super().dispatch(*args, **kwargs)
 
     def get(self, request, format=None):
         serializer = UserSerializer(request.user)
+
         return Response(serializer.data)
 
     def post(self, request, format=None):
         user_serializer = UserSerializer(data=request.data)
         if user_serializer.is_valid(raise_exception=True):
             user_serializer.save()
+
             return Response(user_serializer.data, status=status.HTTP_201_CREATED)
+
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, format=None):
@@ -82,6 +88,7 @@ class UserCrudView(APIView):
         serializer = UserSerializer(user, data=user_data, partial=True)
         if serializer.is_valid():
             serializer.save()
+
             return Response(serializer.data)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -90,9 +97,12 @@ class UserCrudView(APIView):
         serializer = UserSerializer(request.user, data=request.data)
         if serializer.is_valid():
             serializer.save()
+
             return Response(serializer.data, status=status.HTTP_200_OK)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, format=None):
         request.user.delete()
+
         return Response(status=status.HTTP_204_NO_CONTENT)
