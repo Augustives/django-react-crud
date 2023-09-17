@@ -31,10 +31,30 @@ class UserSerializer(serializers.ModelSerializer):
 
         customer_serializer = CustomerSerializer(data=customer_data)
         if customer_serializer.is_valid(raise_exception=True):
-            customer: Customer = customer_serializer.save()
+            customer = customer_serializer.save()
 
         user = User.objects.create(email=validated_data["email"], customer=customer)
         user.set_password(decrypted_password)
         user.save()
 
         return user
+
+    def update(self, instance, validated_data):
+        customer_data = validated_data.pop("customer", None)
+        instance.email = validated_data.get("email", instance.email)
+
+        if "password" in validated_data:
+            decoded_password = b64decode(validated_data["password"])
+            decrypted_password = decrypt_message(decoded_password).decode()
+            instance.set_password(decrypted_password)
+
+        instance.save()
+
+        if customer_data:
+            customer_serializer = CustomerSerializer(
+                instance.customer, data=customer_data
+            )
+            if customer_serializer.is_valid(raise_exception=True):
+                customer_serializer.save()
+
+        return instance

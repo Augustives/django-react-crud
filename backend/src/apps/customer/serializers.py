@@ -42,6 +42,24 @@ class CustomerSerializer(serializers.ModelSerializer):
 
         address_serializer = AddressSerializer(data=address_data)
         if address_serializer.is_valid(raise_exception=True):
-            address: Address = address_serializer.save()
+            address = address_serializer.save()
 
         return Customer.objects.create(address=address, **validated_data)
+
+    def update(self, instance, validated_data):
+        address_data = validated_data.pop("address", None)
+
+        instance.name = validated_data.get("name", instance.name)
+        instance.identifier = validated_data.get("identifier", instance.identifier)
+        instance.identifier_type = validated_data.get(
+            "identifier_type", instance.identifier_type
+        )
+
+        instance.save()
+
+        if address_data:
+            address_serializer = AddressSerializer(instance.address, data=address_data)
+            if address_serializer.is_valid(raise_exception=True):
+                address_serializer.save()
+
+        return instance
