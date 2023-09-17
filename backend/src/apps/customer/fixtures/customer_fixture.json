@@ -1,0 +1,12 @@
+[
+  {
+    "model": "customer.customer",
+    "pk": "a9b1c2d3-4567-8910-1112-131415161718",
+    "fields": {
+      "name": "John Doe",
+      "identifier": "22459203098",
+      "identifier_type": "CPF",
+      "address": "5d263f48-a27d-4c77-a285-25c6b8a4f5f7"
+    }
+  }
+]
