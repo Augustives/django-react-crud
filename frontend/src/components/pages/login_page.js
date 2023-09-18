@@ -3,7 +3,7 @@ import LoginForm from "../modules/login_form";
 const Login = () => {
   return (
     <section className="h-full w-full flex flex-row items-center justify-center">
-      <div className="bg-gray-100 w-1/4 rounded-md p-6 flex flex-col items-center justify-center">
+      <div className="bg-gray-100 w-max sm:w-2/6 rounded-md p-6 flex flex-col items-center justify-center">
         <h1 className="text-2xl font-bold leading-tight">Login</h1>
         <div className="w-full">
           <LoginForm />

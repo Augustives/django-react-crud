@@ -56,7 +56,7 @@ def encrypt_message(plaintext):
         ),
     )
 
-    return b64encode(ciphertext)
+    return str(b64encode(ciphertext)).decode()
 
 
 def decrypt_message(ciphertext):

@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/auth_hook";
+
+import { cpf, cnpj } from "cpf-cnpj-validator";
 
 import FormButton from "../elements/form_button";
 import Input from "../elements/input";
-import Modal from "../elements/modal";
 import Select from "../elements/select";
 
-const RegisterForm = () => {
-  const navigate = useNavigate();
+import encryptMessage from "../../utils/crypt";
 
-  const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState("passwordMismatch");
+const RegisterForm = () => {
+  const { register, setError } = useAuth();
 
   const [confirmPassword, setconfirmPassword] = useState("");
   const [formData, setFormData] = useState({
@@ -33,8 +33,19 @@ const RegisterForm = () => {
 
   const checkPasswords = () => {
     if (formData.password !== confirmPassword) {
-      setModalType("passwordMismatch");
-      setShowModal(true);
+      setError("Invalid credentials");
+    }
+  };
+
+  const validateIdentifier = () => {
+    if (formData.identifier_type === "CPF") {
+      if (!cpf.isValid(formData.identifer)) {
+        setError("Invalid document");
+      }
+    } else if (formData.identifier_type === "CNPJ") {
+      if (!cnpj.isValid(formData.identifer)) {
+        setError("Invalid document");
+      }
     }
   };
 
@@ -57,27 +68,17 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     checkPasswords();
+    validateIdentifier();
 
+    let encryptedPassword;
     try {
-      const response = await fetch("http://localhost:8000/user/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setModalType("success");
-        setShowModal(true);
-      } else {
-        setModalType("failure");
-        setShowModal(true);
-      }
+      encryptedPassword = await encryptMessage(formData.password);
     } catch (error) {
-      setModalType("failure");
-      setShowModal(true);
+      setError(error);
+      return;
     }
+
+    register({ ...formData, password: encryptedPassword });
   };
 
   return (
@@ -98,7 +99,6 @@ const RegisterForm = () => {
               type="password"
               placeholder="Enter the password"
               required
-              minLength={6}
               onChange={(e) => handleChange("password", e.target.value)}
             />
 
@@ -107,7 +107,6 @@ const RegisterForm = () => {
               type="password"
               placeholder="Enter the password again"
               required
-              minLength={6}
               onChange={(e) => setconfirmPassword(e.target.value)}
             />
 
@@ -233,33 +232,6 @@ const RegisterForm = () => {
           </div>
         </section>
       </form>
-
-      {showModal && modalType === "passwordMismatch" && (
-        <Modal
-          text="The passwords don't match."
-          label="Passwords Mismatch"
-          setOpenModal={setShowModal}
-          onConfirm={() => {}}
-        />
-      )}
-      {showModal && modalType === "failure" && (
-        <Modal
-          text="Failed to create user."
-          label="Failure"
-          setOpenModal={setShowModal}
-          onConfirm={() => {}}
-        />
-      )}
-      {showModal && modalType === "success" && (
-        <Modal
-          text="User created successfully."
-          label="Success"
-          setOpenModal={setShowModal}
-          onConfirm={() => {
-            navigate("/");
-          }}
-        />
-      )}
     </>
   );
 };

@@ -1,16 +1,13 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useAuth } from "../../hooks/auth_hook";
 
 import FormButton from "../elements/form_button";
 import Input from "../elements/input";
-import Modal from "../elements/modal";
 
 import encryptMessage from "../../utils/crypt";
 
 const LoginForm = () => {
-  const navigate = useNavigate();
-
-  const [showModal, setShowModal] = useState(false);
+  const { login, setError } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,61 +15,43 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(await encryptMessage(password));
+    let encryptedPassword;
+    try {
+      encryptedPassword = await encryptMessage(password);
+    } catch (error) {
+      setError(error);
+      return;
+    }
 
-    // try {
-    //   const response = await fetch("http://localhost:8000/user/login/", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       username: email,
-    //       password: await encryptMessage(password),
-    //     }),
-    //   });
-
-    //   if (response.ok) {
-    //   } else {
-    //     setShowModal(true);
-    //   }
-    // } catch (error) {
-    //   setShowModal(true);
-    // }
+    await login(email, encryptedPassword);
   };
 
   return (
     <>
       <form className="mt-6 flex flex-col items-center" onSubmit={handleSubmit}>
-        <div className="w-80">
+        <div className="w-10/12">
           <Input
             label="Email Address"
             type="email"
             placeholder="Enter the email address"
+            required
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
-        <div className="mt-4 w-80">
+        <div className="mt-4 w-10/12">
           <Input
             label="Password"
             type="password"
             placeholder="Enter the password"
             required
             minLength={6}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
         <FormButton text="Log In" />
       </form>
-
-      {showModal && (
-        <Modal
-          text="Failed to login."
-          label="Failure"
-          setOpenModal={setShowModal}
-          onConfirm={() => {}}
-        />
-      )}
     </>
   );
 };

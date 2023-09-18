@@ -1,4 +1,5 @@
 import { pem2jwk } from "pem-jwk";
+import { Buffer } from "buffer";
 
 async function encryptMessage(plainText) {
   const publicKeyPEM = process.env.REACT_APP_PUBLIC_KEY;
@@ -16,6 +17,7 @@ async function encryptMessage(plainText) {
   );
 
   const textBuffer = new TextEncoder().encode(plainText);
+
   const encryptedBuffer = await window.crypto.subtle.encrypt(
     {
       name: "RSA-OAEP",

@@ -1,7 +1,12 @@
-import Login from "./components/pages/login_page";
+import RootLayout from "./components/layouts/root_layout";
+import { AuthProvider } from "./context/auth_provider";
 
 const App = () => {
-  return <Login />;
+  return (
+    <AuthProvider>
+      <RootLayout />
+    </AuthProvider>
+  );
 };
 
 export default App;
