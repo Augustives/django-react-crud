@@ -73,7 +73,7 @@ class UserCrudView(APIView):
         customer_data = model_to_dict(customer, exclude="address") | request.data.pop(
             "customer", {}
         )
-        user_data = model_to_dict(user, exclude="customer") | request.data
+        user_data = request.data
 
         address_serializer = AddressSerializer(address, data=address_data, partial=True)
         if address_serializer.is_valid(raise_exception=True):
@@ -89,7 +89,7 @@ class UserCrudView(APIView):
         if serializer.is_valid():
             serializer.save()
 
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
