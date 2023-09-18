@@ -25,9 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         customer_data = validated_data.pop("customer")
-
-        decoded_password = b64decode(validated_data["password"])
-        decrypted_password = decrypt_message(decoded_password).decode()
+        decrypted_password = decrypt_message(validated_data["password"])
 
         customer_serializer = CustomerSerializer(data=customer_data)
         if customer_serializer.is_valid(raise_exception=True):
@@ -44,8 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
         instance.email = validated_data.get("email", instance.email)
 
         if "password" in validated_data:
-            decoded_password = b64decode(validated_data["password"])
-            decrypted_password = decrypt_message(decoded_password).decode()
+            decrypted_password = decrypt_message(validated_data["password"])
             instance.set_password(decrypted_password)
 
         instance.save()

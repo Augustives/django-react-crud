@@ -1,5 +1,3 @@
-from base64 import b64encode
-
 import pytest
 from apps.user.models import User
 from utils.crypt import encrypt_message
@@ -8,7 +6,7 @@ from utils.crypt import encrypt_message
 @pytest.fixture
 def brazilian_user_password():
     # Replicate front-end encryption pattern
-    yield b64encode(encrypt_message("123456789asd@".encode()))
+    yield encrypt_message("123456789asd@".encode())
 
 
 @pytest.fixture

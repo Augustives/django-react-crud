@@ -7,6 +7,9 @@ const Select = ({ label, choices, ...extra }) => {
           focus:border-blue-500 focus:bg-white focus:outline-none"
         {...extra}
       >
+        <option value="" disabled selected>
+          Select an option
+        </option>
         {choices.map((choice, index) => (
           <option className="bg-gray-200" key={index} value={choice.value}>
             {choice.label}

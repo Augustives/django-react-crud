@@ -20,8 +20,7 @@ class UserLoginView(KnoxLoginView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
-        decoded_password = b64decode(request.data.get("password", ""))
-        decrypted_password = decrypt_message(decoded_password).decode()
+        decrypted_password = decrypt_message(request.data.get("password", ""))
 
         serializer = AuthTokenSerializer(
             data=request.data | {"password": decrypted_password}
@@ -42,12 +41,6 @@ class UserCrudView(APIView):
 
         return super().get_permissions()
 
-    def dispatch(self, *args, **kwargs):
-        if self.request.method.lower() != "post":
-            method_decorator(csrf_protect)(self)
-
-        return super().dispatch(*args, **kwargs)
-
     def get(self, request, format=None):
         serializer = UserSerializer(request.user)
 
@@ -62,6 +55,7 @@ class UserCrudView(APIView):
 
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @method_decorator(csrf_protect, name="dispatch")
     def patch(self, request, format=None):
         user = request.user
         customer = user.customer
@@ -93,6 +87,7 @@ class UserCrudView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @method_decorator(csrf_protect, name="dispatch")
     def put(self, request, format=None):
         serializer = UserSerializer(request.user, data=request.data)
         if serializer.is_valid():
@@ -102,6 +97,7 @@ class UserCrudView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @method_decorator(csrf_protect, name="dispatch")
     def delete(self, request, format=None):
         request.user.delete()
 

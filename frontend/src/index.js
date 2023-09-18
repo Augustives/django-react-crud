@@ -1,11 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import App from "./app";
+import RootLayout from "./components/layouts/root_layout";
 import ErrorPage from "./components/pages/error";
 import Register from "./components/pages/register";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./index.css";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,9 +21,12 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
 ]);
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <RootLayout>
+      <RouterProvider router={router} />
+    </RootLayout>
   </React.StrictMode>
 );

@@ -1,4 +1,5 @@
 import os
+from base64 import b64decode, b64encode
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
@@ -55,7 +56,7 @@ def encrypt_message(plaintext):
         ),
     )
 
-    return ciphertext
+    return b64encode(ciphertext)
 
 
 def decrypt_message(ciphertext):
@@ -75,7 +76,7 @@ def decrypt_message(ciphertext):
     )
 
     decrypted_text = private_key.decrypt(
-        ciphertext,
+        b64decode(ciphertext),
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
@@ -83,4 +84,4 @@ def decrypt_message(ciphertext):
         ),
     )
 
-    return decrypted_text
+    return decrypted_text.decode()
