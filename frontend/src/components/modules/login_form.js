@@ -43,8 +43,8 @@ const LoginForm = () => {
 
   return (
     <>
-      <form className="mt-6" onSubmit={handleSubmit}>
-        <div>
+      <form className="mt-6 flex flex-col items-center" onSubmit={handleSubmit}>
+        <div className="w-80">
           <Input
             label="Email Address"
             type="email"
@@ -52,7 +52,7 @@ const LoginForm = () => {
           />
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 w-80">
           <Input
             label="Password"
             type="password"

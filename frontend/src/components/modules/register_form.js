@@ -228,9 +228,10 @@ const RegisterForm = () => {
               }
             />
           </div>
+          <div className="col-span-2 mx-auto">
+            <FormButton text="Register" />
+          </div>
         </section>
-
-        <FormButton text="Register" />
       </form>
 
       {showModal && modalType === "passwordMismatch" && (
