@@ -48,7 +48,7 @@ def encrypt_message(plaintext):
     )
 
     ciphertext = public_key.encrypt(
-        plaintext,
+        plaintext.encode(),
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
@@ -56,7 +56,7 @@ def encrypt_message(plaintext):
         ),
     )
 
-    return str(b64encode(ciphertext)).decode()
+    return b64encode(ciphertext).decode()
 
 
 def decrypt_message(ciphertext):

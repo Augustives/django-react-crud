@@ -6,7 +6,7 @@ from utils.crypt import encrypt_message
 @pytest.fixture
 def brazilian_user_password():
     # Replicate front-end encryption pattern
-    yield encrypt_message("123456789asd@".encode())
+    yield encrypt_message("123456789asd@")
 
 
 @pytest.fixture
