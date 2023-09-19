@@ -144,6 +144,7 @@ const UserForm = ({ initialData }) => {
           label="Password"
           type="password"
           placeholder="Enter the password"
+          value={initialData ? "********" : ""}
           errorMessage={validationMsg.password}
           minLength={8}
           required
@@ -154,6 +155,7 @@ const UserForm = ({ initialData }) => {
           label="Confirm Password"
           type="password"
           placeholder="Enter the password again"
+          value={initialData ? "********" : ""}
           errorMessage={validationMsg.confirmPassword}
           minLength={8}
           required
