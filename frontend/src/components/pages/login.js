@@ -1,17 +1,6 @@
-import { useAuth } from "../../hooks/user_hook";
 import LoginForm from "../modules/login_form";
-import { useEffect } from "react";
 
 const Login = () => {
-  const { error, setToken } = useAuth();
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken && !error) {
-      setToken(JSON.parse(storedToken));
-    }
-  }, [error, setToken]);
-
   return (
     <section className="h-full w-full flex flex-row items-center justify-center">
       <div className="bg-gray-100 w-max sm:w-2/6 rounded-md p-6 flex flex-col items-center justify-center">

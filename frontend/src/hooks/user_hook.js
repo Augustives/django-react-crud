@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useCallback } from "react";
+import { useContext, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/user_provider";
 
@@ -10,7 +10,10 @@ const useUserProvider = () => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(() => {
+    const storedToken = localStorage.getItem("token");
+    return storedToken ? JSON.parse(storedToken) : null;
+  });
   const [error, setError] = useState(null);
 
   const saveToken = (newToken) => {
@@ -30,13 +33,15 @@ const useUserProvider = () => {
 
       if (res.ok) {
         saveToken({ value: `Token ${data.token}`, expiry: data.expiry });
+        navigate("/user");
       } else {
-        setError(data);
+        setError(data.error ?? data);
       }
     } catch (err) {
       setError(err.message);
     }
   };
+
   const register = async (formData) => {
     try {
       const res = await fetch("http://localhost:8000/user/", {
@@ -84,40 +89,33 @@ const useUserProvider = () => {
 
       if (res.ok) {
         setUser(data);
-        navigate("/user");
       } else {
         setError(data);
       }
     } catch (err) {
       setError(err.message);
     }
-  }, [token, navigate]);
+  }, [token]);
 
-  const patchUser = async () => {
-    try {
-      const res = await fetch("http://localhost:8000/user/", {
-        method: "PATCH",
-        headers: { Authorization: token.value },
-      });
+  // const patchUser = async () => {
+  //   try {
+  //     const res = await fetch("http://localhost:8000/user/", {
+  //       method: "PATCH",
+  //       headers: { Authorization: token.value },
+  //     });
 
-      const data = await res.json();
+  //     const data = await res.json();
 
-      if (res.ok) {
-        setUser(data);
-        navigate("/user");
-      } else {
-        setError(data);
-      }
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  useEffect(() => {
-    if (token) {
-      getUser();
-    }
-  }, [token, getUser]);
+  //     if (res.ok) {
+  //       setUser(data);
+  //       navigate("/user");
+  //     } else {
+  //       setError(data);
+  //     }
+  //   } catch (err) {
+  //     setError(err.message);
+  //   }
+  // };
 
   return {
     user,
@@ -125,8 +123,8 @@ const useUserProvider = () => {
     token,
     setToken,
     error,
-
     setError,
+
     login,
     register,
     logout,

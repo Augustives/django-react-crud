@@ -1,11 +1,24 @@
+import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./hooks/user_hook";
+
 import RootLayout from "./components/layouts/root_layout";
-import { UserProvider } from "./context/user_provider";
 
 const App = () => {
+  const { token } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      navigate("/user");
+    }
+  }, [token, navigate]);
+
   return (
-    <UserProvider>
-      <RootLayout />
-    </UserProvider>
+    <RootLayout>
+      <Outlet />
+    </RootLayout>
   );
 };
 

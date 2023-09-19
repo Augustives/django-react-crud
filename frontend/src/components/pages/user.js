@@ -1,17 +1,16 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
 import { useAuth } from "../../hooks/user_hook";
+
 import Button from "../elements/button";
 
 const User = () => {
-  const navigate = useNavigate();
   const { user, getUser, token, logout } = useAuth();
 
   useEffect(() => {
-    if (!user && !token) {
-      navigate("/");
+    if (token) {
+      getUser();
     }
-  }, [user, getUser, token, navigate]);
+  }, [token, getUser]);
 
   return (
     <section className="h-full w-full flex flex-row items-center justify-center">
@@ -20,9 +19,12 @@ const User = () => {
           <h1 className="text-2xl font-bold leading-tight">
             Welcome {user.customer.name}!
           </h1>
-          <div className="flex justify-between w-full">
+          <div className="flex flex-col items-center  ">
             <div>
               <Button text="Edit" onClick={() => {}} />
+            </div>
+            <div>
+              <Button text="Delete" onClick={() => {}} />
             </div>
             <div>
               <Button
