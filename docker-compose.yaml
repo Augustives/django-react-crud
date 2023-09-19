@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  django:
+    build:
+      context: backend
+    command: >
+      sh -c "python3 src/manage.py makemigrations --noinput &&
+      python3 src/manage.py migrate --noinput &&
+      python3 src/manage.py runserver 0.0.0.0:8000"
+    networks:
+      - django_react_crud
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+
+  react:
+    build:
+      context: frontend
+    networks:
+      - django_react_crud
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - django
+
+networks:
+  django_react_crud:

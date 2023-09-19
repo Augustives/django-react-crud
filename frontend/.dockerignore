@@ -1,0 +1,12 @@
+node_modules/
+npm-debug.log
+
+.idea/
+*.sublime*
+*.vscode/
+*.swp
+*.swo
+*.orig
+
+.DS_Store
+Thumbs.db
