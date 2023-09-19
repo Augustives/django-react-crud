@@ -22,15 +22,11 @@ class UserLoginView(KnoxLoginView):
     def post(self, request, format=None):
         try:
             decrypted_password = decrypt_message(request.data.get("password", ""))
-        except Exception:
-            return Response(
-                {"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST
+            serializer = AuthTokenSerializer(
+                data=request.data | {"password": decrypted_password}
             )
-
-        serializer = AuthTokenSerializer(
-            data=request.data | {"password": decrypted_password}
-        )
-        if not serializer.is_valid():
+            serializer.is_valid(raise_exception=True)
+        except Exception:
             return Response(
                 {"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST
             )

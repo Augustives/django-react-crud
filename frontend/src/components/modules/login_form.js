@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useAuth } from "../../hooks/user_hook";
+import { useAuth } from "../../hooks/auth_hook";
 
-import FormButton from "../elements/button";
+import Button from "../elements/button";
 import Input from "../elements/input";
 
 import encryptMessage from "../../utils/crypt";
@@ -29,7 +29,7 @@ const LoginForm = () => {
   return (
     <>
       <form className="mt-6 flex flex-col items-center" onSubmit={handleSubmit}>
-        <div className="w-10/12">
+        <div className="w-4/6">
           <Input
             label="Email Address"
             type="email"
@@ -39,18 +39,18 @@ const LoginForm = () => {
           />
         </div>
 
-        <div className="mt-4 w-10/12">
+        <div className="w-4/6">
           <Input
             label="Password"
             type="password"
             placeholder="Enter the password"
             required
-            minLength={6}
+            minLength={8}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
-        <FormButton text="Log In" type="submit" />
+        <Button text="Log In" type="submit" />
       </form>
     </>
   );

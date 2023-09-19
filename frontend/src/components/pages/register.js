@@ -1,15 +1,15 @@
-import RegisterForm from "../modules/register_form";
+import UserForm from "../modules/user_form";
 import { useNavigate } from "react-router";
 
 const Register = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="h-full w-full flex flex-row items-center justify-center">
-      <div className="relative bg-gray-100 w-3/5 rounded-md p-6 flex flex-col items-center justify-center">
+    <section className="h-full w-full flex flex-row items-center justify-center m-4">
+      <div className="relative bg-gray-100 w-max rounded-md p-6 flex flex-col items-center justify-center m-2">
         <h1 className="text-2xl font-bold leading-tight">Register</h1>
         <div className="w-full">
-          <RegisterForm />
+          <UserForm />
           <hr className="my-6 border-tiffanyBlue w-full" />
           <p className="mt-8">
             Already have an account?{" "}

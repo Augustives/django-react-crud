@@ -1,6 +1,9 @@
 import Button from "./button";
+import { useAuth } from "../../hooks/auth_hook";
 
 export default function Modal({ setOpenModal, text }) {
+  const { setError } = useAuth();
+
   return (
     <>
       <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -17,6 +20,7 @@ export default function Modal({ setOpenModal, text }) {
                 className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
                 onClick={() => {
                   setOpenModal(false);
+                  setError(null);
                 }}
               >
                 X
@@ -26,6 +30,7 @@ export default function Modal({ setOpenModal, text }) {
               text="Close"
               onClick={() => {
                 setOpenModal(false);
+                setError(null);
               }}
             />
           </div>

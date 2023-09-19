@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { useProviderAuth } from "../hooks/user_hook";
+import { useProviderAuth } from "../hooks/auth_hook";
 
 export const UserContext = createContext({});
 

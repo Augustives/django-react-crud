@@ -1,45 +1,47 @@
 import { useEffect } from "react";
-import { useAuth } from "../../hooks/user_hook";
+import { useNavigate } from "react-router";
+import { useAuth } from "../../hooks/auth_hook";
 
 import Button from "../elements/button";
 
 const User = () => {
-  const { user, getUser, token, logout } = useAuth();
+  const navigate = useNavigate();
+  const { user, getUser, deleteUser, token, logout } = useAuth();
 
   useEffect(() => {
-    if (token) {
+    if (token && !user) {
       getUser();
     }
-  }, [token, getUser]);
+  }, [token, user, getUser]);
 
-  return (
+  return user ? (
     <section className="h-full w-full flex flex-row items-center justify-center">
-      {user ? (
-        <div className="bg-gray-100 w-2/6 rounded-md p-6 flex flex-col items-center justify-center">
-          <h1 className="text-2xl font-bold leading-tight">
-            Welcome {user.customer.name}!
-          </h1>
-          <div className="flex flex-col items-center  ">
-            <div>
-              <Button text="Edit" onClick={() => {}} />
-            </div>
-            <div>
-              <Button text="Delete" onClick={() => {}} />
-            </div>
-            <div>
-              <Button
-                text="Logout"
-                onClick={() => {
-                  logout();
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div>Loading...</div>
-      )}
+      <div className="bg-gray-100 w-2/6 rounded-md p-6 flex flex-col items-center justify-center">
+        <h1 className="text-2xl font-bold leading-tight">
+          Welcome {user.customer.name}!
+        </h1>
+        <Button
+          text="Edit"
+          onClick={() => {
+            navigate("/edit");
+          }}
+        />
+        <Button
+          text="Delete"
+          onClick={() => {
+            deleteUser();
+          }}
+        />
+        <Button
+          text="Logout"
+          onClick={() => {
+            logout();
+          }}
+        />
+      </div>
     </section>
+  ) : (
+    <div>Loading...</div>
   );
 };
 

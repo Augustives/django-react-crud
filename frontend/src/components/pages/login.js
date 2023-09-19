@@ -1,9 +1,22 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/auth_hook";
+
 import LoginForm from "../modules/login_form";
 
 const Login = () => {
+  const { token } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      navigate("/user");
+    }
+  }, [token, navigate]);
+
   return (
     <section className="h-full w-full flex flex-row items-center justify-center">
-      <div className="bg-gray-100 w-max sm:w-2/6 rounded-md p-6 flex flex-col items-center justify-center">
+      <div className="bg-gray-100 w-max rounded-md p-6 flex flex-col items-center justify-center m-2">
         <h1 className="text-2xl font-bold leading-tight">Login</h1>
         <div className="w-full">
           <LoginForm />
