@@ -1,7 +1,3 @@
-from base64 import b64decode
-
-from apps.address.serializers import AddressSerializer
-from apps.customer.serializers import CustomerSerializer
 from apps.user.serializers import UserSerializer
 from django.contrib.auth import login
 from django.forms.models import model_to_dict
@@ -14,6 +10,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from utils.crypt import decrypt_message
+from utils.merge import merge_dicts
 
 
 class UserLoginView(KnoxLoginView):
@@ -62,29 +59,10 @@ class UserCrudView(APIView):
 
     @method_decorator(csrf_protect, name="dispatch")
     def patch(self, request, format=None):
-        user = request.user
-        customer = user.customer
-        address = customer.address
+        original_user_data = UserSerializer().to_representation(instance=request.user)
+        modified_user_data = merge_dicts(original_user_data, request.data)
 
-        address_data = model_to_dict(address) | request.data.get("customer", {}).pop(
-            "address", {}
-        )
-        customer_data = model_to_dict(customer, exclude="address") | request.data.pop(
-            "customer", {}
-        )
-        user_data = request.data
-
-        address_serializer = AddressSerializer(address, data=address_data, partial=True)
-        if address_serializer.is_valid(raise_exception=True):
-            address_serializer.save()
-
-        customer_serializer = CustomerSerializer(
-            customer, data=customer_data, partial=True
-        )
-        if customer_serializer.is_valid(raise_exception=True):
-            customer_serializer.save()
-
-        serializer = UserSerializer(user, data=user_data, partial=True)
+        serializer = UserSerializer(request.user, data=modified_user_data, partial=True)
         if serializer.is_valid():
             serializer.save()
 
