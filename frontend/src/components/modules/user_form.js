@@ -83,7 +83,6 @@ const UserForm = ({ initialData }) => {
   const validateIdentifier = (value) => {
     switch (formData.customer.identifier_type) {
       case "CPF":
-        console.log(cpf.isValid(value));
         return cpf.isValid(value);
       case "CNPJ":
         return cnpj.isValid(value);
@@ -112,7 +111,6 @@ const UserForm = ({ initialData }) => {
     e.preventDefault();
 
     if (!validate()) {
-      console.log(validationMsg);
       return;
     }
 
