@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useAuth } from "../../hooks/auth_hook";
+import { useAuth } from "../../hooks/user_hook";
 
 import { cpf, cnpj } from "cpf-cnpj-validator";
 
-import FormButton from "../elements/form_button";
+import FormButton from "../elements/button";
 import Input from "../elements/input";
 import Select from "../elements/select";
 
@@ -228,7 +228,7 @@ const RegisterForm = () => {
             />
           </div>
           <div className="col-span-2 mx-auto">
-            <FormButton text="Register" />
+            <FormButton text="Register" type="submit" />
           </div>
         </section>
       </form>

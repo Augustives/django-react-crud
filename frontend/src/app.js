@@ -1,11 +1,11 @@
 import RootLayout from "./components/layouts/root_layout";
-import { AuthProvider } from "./context/auth_provider";
+import { UserProvider } from "./context/user_provider";
 
 const App = () => {
   return (
-    <AuthProvider>
+    <UserProvider>
       <RootLayout />
-    </AuthProvider>
+    </UserProvider>
   );
 };
 

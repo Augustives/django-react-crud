@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { useAuth } from "../../hooks/auth_hook";
+import { useAuth } from "../../hooks/user_hook";
 
 import Modal from "../elements/modal";
 
 const RootLayout = () => {
   const [showModal, setShowModal] = useState(false);
-  const { error, setError, setToken } = useAuth();
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken && !error) {
-      setToken(JSON.parse(storedToken));
-    }
-  }, [error, setToken]);
+  const { error } = useAuth();
 
   useEffect(() => {
     if (error) {

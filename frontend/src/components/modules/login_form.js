@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { useAuth } from "../../hooks/auth_hook";
+import { useState } from "react";
+import { useAuth } from "../../hooks/user_hook";
 
-import FormButton from "../elements/form_button";
+import FormButton from "../elements/button";
 import Input from "../elements/input";
 
 import encryptMessage from "../../utils/crypt";
@@ -50,7 +50,7 @@ const LoginForm = () => {
           />
         </div>
 
-        <FormButton text="Log In" />
+        <FormButton text="Log In" type="submit" />
       </form>
     </>
   );

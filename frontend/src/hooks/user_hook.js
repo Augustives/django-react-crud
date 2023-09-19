@@ -1,12 +1,12 @@
 import { useContext, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/auth_provider";
+import { UserContext } from "../context/user_provider";
 
-const useAuth = () => {
-  return useContext(AuthContext);
+const useUser = () => {
+  return useContext(UserContext);
 };
 
-const useProviderAuth = () => {
+const useUserProvider = () => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
@@ -93,6 +93,26 @@ const useProviderAuth = () => {
     }
   }, [token, navigate]);
 
+  const patchUser = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/user/", {
+        method: "PATCH",
+        headers: { Authorization: token.value },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setUser(data);
+        navigate("/user");
+      } else {
+        setError(data);
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   useEffect(() => {
     if (token) {
       getUser();
@@ -114,4 +134,4 @@ const useProviderAuth = () => {
   };
 };
 
-export { useProviderAuth, useAuth };
+export { useUserProvider as useProviderAuth, useUser as useAuth };

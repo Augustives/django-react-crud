@@ -1,4 +1,4 @@
-import FormButton from "./form_button";
+import Button from "./button";
 
 export default function Modal({ setOpenModal, text }) {
   return (
@@ -22,7 +22,7 @@ export default function Modal({ setOpenModal, text }) {
                 X
               </button>
             </div>
-            <FormButton
+            <Button
               text="Close"
               onClick={() => {
                 setOpenModal(false);

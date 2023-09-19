@@ -3,8 +3,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./app";
 import ErrorPage from "./components/pages/error";
 import Register from "./components/pages/register";
-import User from "./components/pages/user_page";
-import Login from "./components/pages/login_page";
+import User from "./components/pages/user";
+import Login from "./components/pages/login";
 
 const Router = () => {
   const routes = createBrowserRouter([
