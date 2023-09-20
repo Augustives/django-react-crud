@@ -15,12 +15,12 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     def _validate_cnpj(self, value: str) -> str:
         if not CNPJ().validate(value):
-            raise serializers.ValidationError("Invalid CNPJ")
+            raise serializers.ValidationError({"identifier": "Invalid CPF"})
         return value
 
     def _validate_cpf(self, value: str) -> str:
         if not CPF().validate(value):
-            raise serializers.ValidationError("Invalid CPF")
+            raise serializers.ValidationError({"identifier": "Invalid CNPJ"})
         return value
 
     def _validate_identifier(self, identifier: str, identifier_type: str):
@@ -30,7 +30,9 @@ class CustomerSerializer(serializers.ModelSerializer):
             case IdentifierType.CNPJ:
                 return self._validate_cnpj(identifier)
 
-        raise serializers.ValidationError("Invalid 'identifier_type'")
+        raise serializers.ValidationError(
+            {"identifier_type": "Invalid 'identifier_type'"}
+        )
 
     def validate(self, attrs):
         self._validate_identifier(attrs.get("identifier"), attrs.get("identifier_type"))
