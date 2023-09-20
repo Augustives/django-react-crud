@@ -59,7 +59,7 @@ class UserCrudView(APIView):
 
     @method_decorator(csrf_protect, name="dispatch")
     def patch(self, request, format=None):
-        original_user_data = UserSerializer().to_representation(instance=request.user)
+        original_user_data = UserSerializer(instance=request.user).data
         modified_user_data = merge_dicts(original_user_data, request.data)
 
         serializer = UserSerializer(request.user, data=modified_user_data, partial=True)
