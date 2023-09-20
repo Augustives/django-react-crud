@@ -20,6 +20,7 @@ const User = () => {
         <h1 className="text-2xl font-bold leading-tight">
           Welcome {user.customer.name}!
         </h1>
+        <h2 className="text-lg">Logged in with: {user.email}</h2>
         <Button
           text="Edit"
           onClick={() => {
