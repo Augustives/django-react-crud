@@ -7,7 +7,7 @@ import Button from "../elements/button";
 import Input from "../elements/input";
 import Select from "../elements/select";
 
-import encryptMessage from "../../utils/crypt";
+import { encryptMessage } from "../../utils/crypt";
 
 const UserForm = ({ initialData }) => {
   const { registerUser, putUser } = useAuth();

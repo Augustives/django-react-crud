@@ -1,34 +1,19 @@
-import { pem2jwk } from "pem-jwk";
-import { Buffer } from "buffer";
+const crypto = require('crypto-browserify');
+const Buffer = require('buffer').Buffer;
 
-async function encryptMessage(plainText) {
-  const publicKeyPEM = process.env.REACT_APP_PUBLIC_KEY;
-  const publicKeyJWK = pem2jwk(publicKeyPEM);
-
-  const publicKey = await window.crypto.subtle.importKey(
-    "jwk",
-    publicKeyJWK,
-    {
-      name: "RSA-OAEP",
-      hash: "SHA-256",
-    },
-    true,
-    ["encrypt"]
-  );
-
-  const textBuffer = new TextEncoder().encode(plainText);
-
-  const encryptedBuffer = await window.crypto.subtle.encrypt(
-    {
-      name: "RSA-OAEP",
-    },
-    publicKey,
-    textBuffer
-  );
-
-  const encryptedMessage = Buffer.from(encryptedBuffer).toString("base64");
-
-  return encryptedMessage;
+function encryptMessage(plaintext) {
+    const publicKeyStr = process.env.REACT_APP_PUBLIC_KEY;
+    const buffer = Buffer.from(plaintext, 'utf8');
+    const encrypted = crypto.publicEncrypt(publicKeyStr, buffer);
+    return encrypted.toString('base64');
 }
 
-export default encryptMessage;
+function decryptMessage(ciphertext) {
+    const privateKeyStr = process.env.PRIVATE_KEY;
+    const buffer = Buffer.from(ciphertext, 'base64');
+    const decrypted = crypto.privateDecrypt(privateKeyStr, buffer);
+    return decrypted.toString('utf8');
+}
+
+
+export { encryptMessage, decryptMessage }

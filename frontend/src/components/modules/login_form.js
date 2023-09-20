@@ -4,7 +4,7 @@ import { useAuth } from "../../hooks/auth_hook";
 import Button from "../elements/button";
 import Input from "../elements/input";
 
-import encryptMessage from "../../utils/crypt";
+import { encryptMessage } from "../../utils/crypt";
 
 const LoginForm = () => {
   const { login, setError } = useAuth();
@@ -18,8 +18,8 @@ const LoginForm = () => {
     let encryptedPassword;
     try {
       encryptedPassword = await encryptMessage(password);
-    } catch (error) {
-      setError(error);
+    } catch (err) {
+      setError(`An unexpected error occurred: ${err.message}`);
       return;
     }
 

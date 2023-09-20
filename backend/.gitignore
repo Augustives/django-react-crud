@@ -6,6 +6,7 @@ __pycache__/
 *.venv
 venv/
 env/
+.env
 
 .vscode/
 .idea/
@@ -22,3 +23,5 @@ sdist/
 *.egg
 
 *.cfg.local
+
+*.pem

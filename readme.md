@@ -8,6 +8,10 @@ _Make sure you have docker and docker compose installed and running_
 - Run `make down` in the root folder of the project to stop the container
 - Run `make rm` in the root folder of the project to remove the container
 
+## Setup:
+
+Inside the backend projects in a folder called utils there is a file called crypt, inside it there is a function that will generate a public and private key pair which are required to be set in the .env files. This keys are used to encrypt the password so it don't travel in plain text through the web.
+
 ## Urls:
 
 - Django will be available at `localhost:8000`
