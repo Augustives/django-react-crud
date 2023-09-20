@@ -41,13 +41,8 @@ const UserForm = ({ initialData }) => {
       return re.test(String(value).toLowerCase()) || "Invalid email address";
     },
     password: (value) => {
-      if (value.length < 8) {
-        return "Password must be at least 8 characters";
-      }
-      if (/^\d+$/.test(value)) {
-        return "Password should not be only numeric";
-      }
-      return true;
+      const re = /^\d+$/;
+      return re.test(value) || "Password should not be only numeric";
     },
     confirmPassword: () => {
       return confirmPassword === formData.password || "Passwords do not match";
@@ -165,6 +160,7 @@ const UserForm = ({ initialData }) => {
           type="text"
           placeholder="Enter your name"
           value={formData.customer.name}
+          maxLength={128}
           required
           onChange={(e) => handleChange("customer.name", e.target.value)}
         />
@@ -246,6 +242,7 @@ const UserForm = ({ initialData }) => {
           type="text"
           placeholder="Enter the city"
           value={formData.customer.address.city}
+          maxLength={64}
           required
           onChange={(e) =>
             handleChange("customer.address.city", e.target.value)
@@ -257,6 +254,7 @@ const UserForm = ({ initialData }) => {
           type="text"
           placeholder="Enter the street"
           value={formData.customer.address.street}
+          maxLength={256}
           required
           onChange={(e) =>
             handleChange("customer.address.street", e.target.value)
@@ -268,6 +266,7 @@ const UserForm = ({ initialData }) => {
           type="text"
           placeholder="Enter the postal code"
           value={formData.customer.address.postal_code}
+          maxLength={32}
           required
           onChange={(e) =>
             handleChange("customer.address.postal_code", e.target.value)
@@ -279,6 +278,7 @@ const UserForm = ({ initialData }) => {
           type="text"
           placeholder="Enter additional information"
           value={formData.customer.address.additional_info}
+          maxLength={256}
           onChange={(e) =>
             handleChange("customer.address.additional_info", e.target.value)
           }
